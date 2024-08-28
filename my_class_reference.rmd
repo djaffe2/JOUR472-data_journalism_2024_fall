@@ -33,3 +33,9 @@ setwd("~/jour472/data_journalism_2024_fall")
 install.packages("tidyverse")
 library(tidyverse)
 ```
+
+
+```{r}
+print("hi")
+```
+
