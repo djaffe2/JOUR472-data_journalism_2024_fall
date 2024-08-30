@@ -25,13 +25,20 @@ The command to set a working directory is setwd(). For example, this sets the wo
 
 ```{r}
 setwd("~/jour472/data_journalism_2024_fall")
+(firstnumber + secondnumber) * secondnumber
+- can do math functions for you
+
 ```
 
 ### How to install and load the tidyverse
 
 ```{r}
 install.packages("tidyverse")
+-packages make it easier to compute data and reshapes it before analysis
+-To install all of the Tidyverse libraries at once, the function is install.packages('tidyverse'). You can type it directly in the console.
+-install.packages('rmarkdown')
 library(tidyverse)
+
 ```
 
 
