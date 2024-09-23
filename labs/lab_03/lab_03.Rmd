@@ -34,7 +34,10 @@ md_contribs <- read_rds("data/lab_03.rds")
 You'll need to fix one issue with the column names using janitor. Write a code block to do that, making sure that you save the results to the same dataframe.
 
 ```{r}
+md_contribs<-md_contribs|>
+clean_names()
 
+glimpse(md_contribs)
 ```
 
 
@@ -47,6 +50,14 @@ Note: To answer this question, you'll need to see every variation of the "contri
 A1:
 
 ```{r}
+md_contribs |>
+  group_by(contributor_city) |>
+  summarise (
+    count=n (),
+  )|>
+  arrange (desc(count))
+
+
 
 ```
 
@@ -57,13 +68,22 @@ Where is that zip code and what kind of area is it, demographically? Which commi
 A2:
 
 ```{r}
-
+md_contribs |>
+  mutate(contributor_zip=str_sub(contributor_zip, start=1,end=5))|>
+  group_by(contributor_zip) |>
+  summarise (
+    count=n ()
+  )|>
+  arrange (desc(count))
 ```
 
 Q3: Let's look at top individual donors. Write code to generate a list of top donors using name and city, adding up the total amount of contributions. What does the original data say about the top two donors - who are they and what do they do? Do you see anything in the list of top 10 donors that would make you uncertain about the accuracy of these results?
 
-A3:
+A3:The top doners are from cities that had the most contributions/ are from wealthy cities in Maryland
 
 ```{r}
-
+md_contribs|>
+  group_by(contributor_name, contributor_city) |>
+  summarise(total_amount=n()) |>
+  arrange(desc(total_amount))
 ```
