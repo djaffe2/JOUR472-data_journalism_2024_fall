@@ -55,9 +55,10 @@ md_contribs |>
   summarise (
     count=n (),
   )|>
-  arrange (desc(count))
+  arrange (desc(contributions=n()))
 
-
+#arrange (desc(contributions))
+#bethesda, chevy chase, baltimore, annapolis, potomac, silver spring, rockville, ellicot city, columbia, takoma park
 
 ```
 
@@ -84,6 +85,6 @@ A3:The top doners are from cities that had the most contributions/ are from weal
 ```{r}
 md_contribs|>
   group_by(contributor_name, contributor_city) |>
-  summarise(total_amount=n()) |>
+  summarise(total_amount=sum (contribution_receipt_amount)) |>
   arrange(desc(total_amount))
 ```
