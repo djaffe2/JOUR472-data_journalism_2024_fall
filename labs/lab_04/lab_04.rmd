@@ -47,6 +47,7 @@ You'll need to load one data set, a CSV file of campaign expenditures located in
 # Load the Maryland expenditures data table
 md_senate <- read_csv("data/md_senate_expenses.csv")
 View(md_senate)
+
 ```
 
 ## Answer questions
@@ -60,32 +61,59 @@ Then, when you are done standardizing `purpose_clean`, export it as a new CSV fi
 Then, using that `purpose_clean` column, write code to find the largest amounts of spending on categories by both campaigns.
 
 **A1.**
+```{r}
+md_senate_clean <- read_csv("data/md_senate_purpose.csv")
+```
 
 ```{r}
+md_senate_clean |>
+  mutate(purpose_clean= case_when (
+  purpose_clean== "AD BUY" ~ "Media Advertising",
+  TRUE~ purpose_clean
+))|>
+  group_by(purpose_clean) |>
+  summarise(
+    total_spending = sum(amount, na.rm = TRUE),
+    count = n()
+  ) |>
+  arrange(desc(total_spending)) 
 
 ```
 
 **Q2.** Let's do some research on the top purposes from A1. Feel free to search the Web to understand those terms better if need be, and then write a description comparing and contrasting the two campaigns' largest categories of spending.
 
-**A2.**
+**A2.** The largest contributions come from media advertising and salary. 
 
 **Q3.** Pick one of the top categories for each campaign and write code that shows how that spending has changed over time, if at all. You'll need to use lubridate for this. Write a couple of sentences describing that pattern.
 
 **A3.**
 
 ```{r}
-
+md_senate_clean <- md_senate_clean |>
+filter (purpose_clean=="Salary") |>
+group_by (month (date)) |>
+summarise(
+total=sum (amount))|>
+arrange (desc(total))
+md_senate_clean
 
 ```
 
 **Q4.** Which committee has the larger payroll or salary spending so far? How many unique recipients of payroll/staff spending are there for each candidate?
 
-**A4.**
+**A4.** I used ChatGPT for this questions because I kept getting the error that purpose_clean is not found. I asked ChatGPT what my error was and used the revised code but it is still not working.
 
 ```{r}
+library(dplyr)
+
+md_senate_clean |>
+  filter(purpose_clean == "Payroll" | purpose_clean == "Staffing") |>
+  group_by(candidate) |>
+  summarise(total = sum(amount, na.rm = TRUE), .groups = 'drop') |>
+  arrange(desc(total))
 
 ```
 
 **Q5** What's the most interesting story idea you've found in this data?
 
-**A5**
+**A5** It is interesting to see which candidate prioritized their spending and where they invested in most. I think there could be a story if one of the candidates prioritized something more/less than the other and if it directly correlated to how their campaign turned out.

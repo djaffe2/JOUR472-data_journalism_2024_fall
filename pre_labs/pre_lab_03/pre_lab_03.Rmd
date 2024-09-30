@@ -113,7 +113,7 @@ texas_precinct_20 |>
   summarise(
     count=n()
   ) |>
-  arrange(desc(count))
+  
 ```
 
 ### Task 8: Install lubridate (if you haven't already)
