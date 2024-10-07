@@ -1,7 +1,7 @@
 ---
 title: "Reverse Engineering Project"
-author: "Student names here"
-date: "Date here"
+author: "Dylan, Oliver, Michael"
+date: "10/06/2024"
 output:
   html_document:
     theme: cerulean
@@ -18,13 +18,18 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Introduction 
 
-In this notebook, we are reverse engineering the story, [STORY NAME](STORY URL)
+In this notebook, we are reverse engineering the story, [Why Many American's Don't Vote ](https://projects.fivethirtyeight.com/non-voters-poll-2020-election/)
 
 ## Load libraries
 
 Loading required libraries for this analysis.
 
 ```{r echo=FALSE, message=FALSE}
+library(lubridate)
+library(tidyverse)
+library(janitor)
+library(dplyr)
+library(refinr)
 
 ```
 
@@ -36,7 +41,7 @@ In this section, describe the source of the data, write a basic data dictionary 
 # Load required data
 
 # Path to data should be loaded from folder "data" i.e. read_csv("data/name_of_data.csv")
-
+american_voter_data<- read_csv("data/nonvoters_data.csv")
 # Clean required data and prepare for analysis if needed. 
 
 
@@ -47,11 +52,16 @@ In this notebook, we are reverse engineering five sentences from the story.
 
 ### Sentence 1
 
-* **Sentence text**: [Paste in sentence to engineer here]
-* **Analysis summary**: [Write up two to three sentences describing the results of your analysis.  Were you able to confirm the finding? If not, why not?]
+* **Sentence text**: Every election, millions of Americans go through a similar thought process and, it turns out, lots of people feel like Brown: They think voting doesn't matter or isn't worth their time.
+**Analysis summary**: We connected Q26 to Q29 to confirm the finding that either their vote does not matter or that voting is not worth their time. We were able to confirm this based on the responses to Q26 with prompts 2,3, and 4 in the nonvoters codebook PDF.
 
 ```{r}
 # Put code to reverse engineer sentence here
+american_voter_data|>
+  filter(Q26)|>
+  group_by("2,3,4")|>
+  summarise(Q26)
+
 
 # Display results of code below this codeblock
 
