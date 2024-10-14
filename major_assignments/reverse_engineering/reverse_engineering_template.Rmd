@@ -73,31 +73,39 @@ view(filtered_data)
 
 ### Sentence 2
 
-* **Sentence text**: [Paste in sentence to engineer here]
-* **Analysis summary**: [Write up two to three sentences describing the results of your analysis.  Were you able to confirm the finding? If not, why not?]
+* **Sentence text**: In the survey, we asked voters who have missed at least one national election - which included some people who almost always vote - why they didn't cast a ballot. Nearly a quarter cited some of the structural barriers we mentioned above. But another 31 percent said that they decided not to vote because they disliked the candidates or they thought nothing would change as a result of the election (26 percent).
+* **Analysis summary**: Out of 1,342 people who say they sometimes, rarely, or don't vote in national elections, 765 say that they either dislike the candidates or that nothing will change for them. 403 say they dislike the candidates, while 362 say nothing will change as a result. This is
+similar to the original numbers presented in the text, as 403 is 30% of 1342 and 362 is 27%.
 
 ```{r}
-# Put code to reverse engineer sentence here
+filtered_data <- american_voter_data[american_voter_data$Q26 %in% c(2, 3,4),
+                                     ]
+filtered_data<- filtered_data [
+  filtered_data $Q29_1==1 |
+    filtered_data$Q29_3 ==1,
+]
 
-# Display results of code below this codeblock
+filtered_data
 
 ```
 
 ### Sentence 3
 
-* **Sentence text**: [Paste in sentence to engineer here]
+* **Sentence text**: Williams is certainly not alone in experiencing these barriers. Of the three groups of voters we identified, those voters who only vote some of the time were actually the likeliest to report having stood in line for more than an hour; they were also likelier than those who vote more regularly to say they couldn’t get off work to vote.
 * **Analysis summary**: [Write up two to three sentences describing the results of your analysis.  Were you able to confirm the finding? If not, why not?]
 
 ```{r}
-# Put code to reverse engineer sentence here
+filtered_data<-filtered_data[
+  filtered_data$Q18_1==1 |
+    filtered_data$Q18_3== 1|]
 
-# Display results of code below this codeblock
-
+print(filtered_data)
 ```
 
 ### Sentence 4
 
-* **Sentence text**: [Paste in sentence to engineer here]
+* **Sentence text**: A substantial chunk of respondents said they don’t think either party wants people like them to vote. (Twenty-three percent said this of Democrats and 31 percent of Republicans.) Black and Hispanic people were especially likely to say the Republicans don’t want people like them to vote: Fifty-four percent of Black respondents and 35 percent of Hispanic respondents agreed with this statement, compared to just 26 percent of white respondents.
+
 * **Analysis summary**: [Write up two to three sentences describing the results of your analysis.  Were you able to confirm the finding? If not, why not?]
 
 ```{r}
