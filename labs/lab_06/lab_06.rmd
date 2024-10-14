@@ -64,8 +64,9 @@ removals<- read.csv('removals.csv')
 
 ```{r}
 # Changes
-changes<- read.csv('party_affil.csv')|>
+changes_2024<- read.csv('party_affil.csv')|>
 rename("address_changes"=ADDRESS.Changes,"name_changes"=NAME.Changes)
+glimpse(changes_2024)
 #View(changes)
 ```
 
@@ -73,7 +74,7 @@ rename("address_changes"=ADDRESS.Changes,"name_changes"=NAME.Changes)
 # Current registrations
 current_reg_2024<- read.csv("current_reg_2024.csv")
 glimpse(current_reg_2024)
-#View(current_reg_2024)
+
 ```
 
 ## Rinse, Repeat: September 2022 data
@@ -115,7 +116,7 @@ Q1. Calculate the percentage of registered Democrats, Republicans and unaffiliat
 A1. The amount of people that are a registered democrat has declined in all counties from 2022 to 2024 while the amount of Republicans registered has inclined in some counties and declined in others. For all counties, the amount of unaffiliated people has increased. I think a good lede for this story would have to revolve around how the quality of politicians in American has declined over the past 8 years
 
 ```{r}
-current_reg_2022<- current_reg_2022|>
+pct_change_2022<- current_reg_2022|>
 mutate(pct_dems_2022=DEM/TOTAL, 
        pct_rep_2022=REP/TOTAL,
        pct_unaf_2022=UNAF/TOTAL)|>
@@ -124,14 +125,14 @@ mutate(pct_dems_2022=DEM/TOTAL,
 ```
 
 ```{r}
- current_reg_2024<- current_reg_2024|>
+pct_change_2024<- current_reg_2024|>
   mutate(total_county=gsub(',','',total_county))|>
   mutate(across(c(DEM, REP, UNAF, total_county, NLM,LIB,OTH,GRN, Inactive), as.numeric))|>
 mutate(pct_dems_2024=DEM/total_county, 
        pct_rep_2024=REP/total_county,
        pct_unaf_2024=UNAF/total_county)|>
   select(COUNTY, pct_dems_2024, pct_rep_2024, pct_unaf_2024)
- current_reg_2024
+
 
 ```
 
@@ -154,30 +155,43 @@ Q2. Among the Maryland jurisdictions with the most registered voters, which one 
 A2.
 
 ```{r}
-pct_change_unaf <- current_reg_2024 |>
-select (COUNTY,pct_unaf_2024) |>
+pct_change_2024 |>
+select (pct_unaf_2024) |>
 mutate (percentage =pct_unaf_2024/TOTAL * 100)
-pct_change_unaf
+pct_change_2024
 ```
 
 Q3. Do the party percentages of new registrants (% Dem, % Rep, % Unaffiliated) from September 2024 and September 2022 match the overall percentage of partisan registration in the state at those times?
 
 In other words, did new registrants mirror the overall partisan composition of the electorate, or were they different? Do any of the methods of registration vary significantly from the overall partisan pattern? Which method is worthy of further exploration?
 
-A3.
+A3. A lot of voters in 2024 are choosing to have an absentee ballot and the amount of voters who register same day/ go in person has declined signifcantly 
 
 ```{r}
+party_registration|>
+ mutate(across(c(DEM, REP, UNAF, TOTAL, NLM,LIB,OTH,GRN, DUPS), as.numeric))|>
+  mutate(perc_dem_2024 = DEM/TOTAL*100,
+perc_rep_2024 = REP/TOTAL*100,
+perc_unaf_2024=UNAF/TOTAL*100) |>
+select(summary, perc_dem_2024, perc_rep_2024, perc_unaf_2024)
+  
 
 ```
 
 Q4. Choose your own adventure! Using both the 2024 and 2022 data for one of the dataframes (changes, removals or new registrations), ask and answer a question that makes at least one comparison and requires code to answer. That could involve calculating a percentage, percentage change or the raw difference between two columns.
 
-A4.
+A4. Which county has the highest difference in registered Republicans and Democrats in 2024?- Prince George's County
 
 ```{r}
+changes_2024|>
+mutate(REP=gsub(',','', REP))|>
+  mutate(DEM=gsub(',','', DEM))|>
+   mutate(REP = as.numeric(REP),
+         DEM = as.numeric(DEM))|>
+  mutate(dem_rep_diff= DEM-REP)|>
+  arrange(desc(dem_rep_diff)) 
 
 ```
-
 Q5. What's the best story idea or question you've seen as a result of the work you've done in this lab?
 
-A5. Are the new politicians that have been running for president turnign the Americans away from wanting to vote?
+A5. Are the new politicians that have been running for president turning Americans away from wanting to vote?
