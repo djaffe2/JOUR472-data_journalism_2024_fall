@@ -83,20 +83,32 @@ filtered_data
 
 ### Sentence 3
 
-* **Sentence text**: Williams is certainly not alone in experiencing these barriers. Of the three groups of voters we identified, those voters who only vote some of the time were actually the likeliest to report having stood in line for more than an hour; they were also likelier than those who vote more regularly to say they couldn’t get off work to vote.
-* **Analysis summary**: When filtering the data, many respondents chose 5 on the survey, which has the answer as they wanted to vote but had work/ other obligations or forgot. 
+* **Sentence text**: They were also likelier than those who vote more regularly to say they couldn’t get off work to vote...
+Also because he doesn’t trust mail-in ballots. “The last time I tried to vote by mail, it didn’t get counted — it was too late,” he said. As a result, Sanchez told us, “I don't know where my ballot is going to end up, if I don't see it put into the voting machine.”
+* **Analysis summary**: When filtering the data, 229 of the respondents chose 5 on the survey, which has the answer as they wanted to vote but had work/ other obligations or forgot. Furthermore, question 19 asks respondents what they think would make it easier for them to vote. I filtered the responses that have to do with automatically being registered to vote and automatically receiving a mail- in ballot which had thousands of respondents say this would mkae voting a lot more appealing for them. Comparing these different answers shows what would make voting more easier for those who might not know about mail-in deadlines.
 
 ```{r}
 
-
-filtered_data <- american_voter_data|>
+race_data <- american_voter_data|>
   select(Q29_5)|>
-filter(Q29 == 5)
-
-filtered_data
-
-
+filter(Q29_5 == 1)
+race_data
 ```
+
+
+```{r}
+race_data <- american_voter_data|>
+  select(Q19_4)|>
+filter(Q19_4 == 1)
+race_data
+```
+```{r}
+race_data <- american_voter_data|>
+  select(Q19_5)|>
+filter(Q19_5 == 1)
+race_data
+```
+
 
 ### Sentence 4
 
@@ -121,13 +133,20 @@ mutate(percent=count/sum(count)*100)
 ### Sentence 5
 
 * **Sentence text**: There are, of course, other systemic reasons why some people might vote more inconsistently. Our survey found, for instance, that occasional voters were slightly more likely than frequent voters to have a long-term disability (8 percent vs. 5 percent), and nonvoters were even more likely to fall into this category (12 percent). Black and Hispanic voters are also more likely to experience hurdles, perhaps in part because there tend to be fewer polling places in their neighborhoods. About 24 percent of Black respondents said that they had to stand in line for more than an hour while voting, and Hispanic respondents were more likely to say they had trouble accessing the polling place or couldn’t get off work in time to vote.”
-* **Analysis summary**: [Write up two to three sentences describing the results of your analysis.  Were you able to confirm the finding? If not, why not?]
+* **Analysis summary**: The first part shows how many Black people said they had to stand in line for more than an hour and the same for Hispanic voters in the next code section. Then you just delete the filter q18 part to get the total amount of black people. For each output, there are over 100 respondants who have said they waited in line for over an hour to vote. 
 
 ```{r}
-# Put code to reverse engineer sentence here
+filtered_data<- american_voter_data
+  filtered_data|>
+  filter(race== 'Black')|>
+  filter(Q18_8 == 1)|>
+  print(filtered_data)
 
-# Display results of code below this codeblock
-
+  filtered_data<- american_voter_data
+  filtered_data|>
+    filter(race == "Hispanic") |>
+    filter(Q18_2== 1 | Q18_7 ==1)|>
+    print(filtered_data)
 ```
 
 -30-
