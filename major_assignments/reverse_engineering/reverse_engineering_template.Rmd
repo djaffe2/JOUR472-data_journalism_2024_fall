@@ -133,7 +133,7 @@ mutate(percent=count/sum(count)*100)
 
 ### Sentence 5
 
-* **Sentence text**: There are, of course, other systemic reasons why some people might vote more inconsistently. Our survey found, for instance, that occasional voters were slightly more likely than frequent voters to have a long-term disability (8 percent vs. 5 percent), and nonvoters were even more likely to fall into this category (12 percent). Black and Hispanic voters are also more likely to experience hurdles, perhaps in part because there tend to be fewer polling places in their neighborhoods. About 24 percent of Black respondents said that they had to stand in line for more than an hour while voting, and Hispanic respondents were more likely to say they had trouble accessing the polling place or couldn’t get off work in time to vote.”
+* **Sentence text**:Black and Hispanic voters are also more likely to experience hurdles, perhaps in part because there tend to be fewer polling places in their neighborhoods. About 24 percent of Black respondents said that they had to stand in line for more than an hour while voting, and Hispanic respondents were more likely to say they had trouble accessing the polling place or couldn’t get off work in time to vote.”
 * **Analysis summary**: The first part shows how many Black people said they had to stand in line for more than an hour and the same for Hispanic voters in the next code section. Then you just delete the filter q18 part to get the total amount of black people. For each output, there are over 100 respondants who have said they waited in line for over an hour to vote. 
 
 ```{r}
