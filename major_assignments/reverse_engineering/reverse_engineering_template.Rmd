@@ -85,7 +85,7 @@ filtered_data
 
 * **Sentence text**: They were also likelier than those who vote more regularly to say they couldn’t get off work to vote...
 Also because he doesn’t trust mail-in ballots. “The last time I tried to vote by mail, it didn’t get counted — it was too late,” he said. As a result, Sanchez told us, “I don't know where my ballot is going to end up, if I don't see it put into the voting machine.”
-* **Analysis summary**: When filtering the data, 229 of the respondents chose 5 on the survey, which has the answer as they wanted to vote but had work/ other obligations or forgot. Furthermore, question 19 asks respondents what they think would make it easier for them to vote. I filtered the responses that have to do with automatically being registered to vote and automatically receiving a mail- in ballot which had thousands of respondents say this would mkae voting a lot more appealing for them. Comparing these different answers shows what would make voting more easier for those who might not know about mail-in deadlines.
+* **Analysis summary**: When filtering the data, 229 of the respondents chose 5 on the survey, which has the answer as they wanted to vote but had work/ other obligations or forgot. Furthermore, question 19 asks respondents what they think would make it easier for them to vote. I filtered the responses that have to do with automatically being registered to vote and automatically receiving a mail- in ballot which had thousands of respondents say this would make voting a lot more appealing for them. Comparing these different answers shows what would make voting more easier for those who might not know about mail-in deadlines.
 
 ```{r}
 
@@ -102,6 +102,7 @@ race_data <- american_voter_data|>
 filter(Q19_4 == 1)
 race_data
 ```
+
 ```{r}
 race_data <- american_voter_data|>
   select(Q19_5)|>
