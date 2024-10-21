@@ -56,18 +56,12 @@ In this notebook, we are reverse engineering five sentences from the story.
 **Analysis summary**: We connected Q26 to Q29 to confirm the finding that either their vote does not matter or that voting is not worth their time. We were able to confirm this based on the responses to Q26 with prompts 2,3, and 4 in the nonvoters codebook PDF.
 
 ```{r}
-# Put code to reverse engineer sentence here
-filtered_data<- american_voter_data [american_voter_data$Q26 %in% c (2, 3 ,4),]
-view (filtered_data)
 
-filtered_data<-filtered_data[
-  filtered_data$Q29_2==1 |
-    filtered_data$Q29_3==1|
-    filtered_data$Q29_4==1,
-]
+filtered_data <- american_voter_data|>
+filter (Q26 >= 2) |>
+filter (Q29_2 == 1)
+print(filtered_data)
 
-view(filtered_data)
-# Display results of code below this codeblock
 
 ```
 
@@ -78,46 +72,55 @@ view(filtered_data)
 similar to the original numbers presented in the text, as 403 is 30% of 1342 and 362 is 27%.
 
 ```{r}
-filtered_data <- american_voter_data[american_voter_data$Q26 %in% c(2, 3,4),
-                                     ]
-filtered_data<- filtered_data [
-  filtered_data $Q29_1==1 |
-    filtered_data$Q29_3 ==1,
-]
-
+filtered_data <- american_voter_data|>
+  filter(Q26==2 | Q26==3|Q26==4)
+                    
 filtered_data
-
+filtered_data<-filtered_data|>
+  filter(Q29_1 == 1 | Q29_3 == 1)
+filtered_data
 ```
 
 ### Sentence 3
 
 * **Sentence text**: Williams is certainly not alone in experiencing these barriers. Of the three groups of voters we identified, those voters who only vote some of the time were actually the likeliest to report having stood in line for more than an hour; they were also likelier than those who vote more regularly to say they couldn’t get off work to vote.
-* **Analysis summary**: [Write up two to three sentences describing the results of your analysis.  Were you able to confirm the finding? If not, why not?]
+* **Analysis summary**: When filtering the data, many respondents chose 5 on the survey, which has the answer as they wanted to vote but had work/ other obligations or forgot. 
 
 ```{r}
-filtered_data<-filtered_data[
-  filtered_data$Q18_1==1 |
-    filtered_data$Q18_3== 1|]
 
-print(filtered_data)
+
+filtered_data <- american_voter_data|>
+  select(Q29_5)|>
+filter(Q29 == 5)
+
+filtered_data
+
+
 ```
 
 ### Sentence 4
 
 * **Sentence text**: A substantial chunk of respondents said they don’t think either party wants people like them to vote. (Twenty-three percent said this of Democrats and 31 percent of Republicans.) Black and Hispanic people were especially likely to say the Republicans don’t want people like them to vote: Fifty-four percent of Black respondents and 35 percent of Hispanic respondents agreed with this statement, compared to just 26 percent of white respondents.
 
-* **Analysis summary**: [Write up two to three sentences describing the results of your analysis.  Were you able to confirm the finding? If not, why not?]
+* **Analysis summary**: While this would be the correct way to find the the percentages of people who think each party does/ does not care about their vote, I think one of the issues is that this data set does not specify which race answered to each question. The republican party shows that 33% of respondents say they don't think republicans want them to vote, similar to the 31% in the article. Q15, which is the democratic party, got a number of 21%, but accounting for the people that didn't vote the number should be similar to the 23% in the article.
 
 ```{r}
-# Put code to reverse engineer sentence here
+american_voter_data|>
+group_by(Q14)|>
+summarise (count=n())|>
+mutate(percent=count/sum(count)*100)
+```
 
-# Display results of code below this codeblock
-
+```{r}
+american_voter_data|>
+group_by(Q15)|>
+summarise (count=n())|>
+mutate(percent=count/sum(count)*100)
 ```
 
 ### Sentence 5
 
-* **Sentence text**: [Paste in sentence to engineer here]
+* **Sentence text**: There are, of course, other systemic reasons why some people might vote more inconsistently. Our survey found, for instance, that occasional voters were slightly more likely than frequent voters to have a long-term disability (8 percent vs. 5 percent), and nonvoters were even more likely to fall into this category (12 percent). Black and Hispanic voters are also more likely to experience hurdles, perhaps in part because there tend to be fewer polling places in their neighborhoods. About 24 percent of Black respondents said that they had to stand in line for more than an hour while voting, and Hispanic respondents were more likely to say they had trouble accessing the polling place or couldn’t get off work in time to vote.”
 * **Analysis summary**: [Write up two to three sentences describing the results of your analysis.  Were you able to confirm the finding? If not, why not?]
 
 ```{r}
