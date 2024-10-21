@@ -172,7 +172,20 @@ zip_code_summary
 
 **Q5** Let's find out more about those zip codes from A4. Using tidycensus, get a dataframe of Maryland zip codes and their median ages, then join it to the dataframe you produced in A4. NOTE: you'll need to ensure that the two columns you use for the join are the same datatype. Summarize your findings; how would you describe the zip codes with more non-Cox Republicans compared to those with fewer? Where are those leading zip codes located?
 
-**A5**
+**A5** The top zip codes are located in Frederick County. Frederick County is located in central Maryland and seems somewhat rural after researching. It seems like the outside/ rural parts of the county are majority Republican, but Moore probably won because of the concentrated voters in the suburbs of the county.
 
 ```{r}
+md_zip<- get_acs (geography= "zcta", variables=c(med_age="B01002_001"), year=2022)
+
+md_zip
+```
+
+```{r}
+joined_data|>
+  mutate(zipcode=as.character(zipcode))|>
+  left_join(md_zip, join_by("zipcode" == "GEOID"))|>
+  filter(u_s_senator == "REP" & representative_in_congress_6 == "REP" & attorney_general == "REP" & governor_lt_governor != "REP")|>
+  group_by(zipcode, estimate)|>
+summarise(split_votes=n())|>
+arrange(desc(split_votes))
 ```
