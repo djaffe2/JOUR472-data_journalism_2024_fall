@@ -18,7 +18,7 @@ In this lab we'll be looking at Maryland absentee ballot requests in the 2024 el
 ```{r}
 # Turn off scientific notation
 options(scipen=999)
-
+install.packages("ggrepel")
 # Load libraries
 library(ggplot2)
 library(tidyverse)
@@ -101,7 +101,7 @@ md_top_10_low_dem
 
 md_top_10_low_dem|>
    ggplot() +
-  geom_bar(aes(x=reorder(`COUNTY NAME`, percent_dem_returned), weight=percent_dem_returned)) +
+  geom_bar(aes(x=reorder(`COUNTY NAME`, -percent_dem_returned), weight=percent_dem_returned)) +
   coord_flip()+
   labs(
     title="Counties with the percentage of Democrat ballots returned",
@@ -130,7 +130,7 @@ frederick_dates|>
   ggplot() +
     geom_line(aes(x = DATE, y = `REP RECEIVED`), color = "red") +
     geom_line(aes(x = DATE, y = `DEM RECEIVED`), color = "blue") +
-    geom_line(aes(x = DATE, y = `OTH RECEIVED`), color = "green") +
+    geom_line(aes(x = DATE, y = `OTH RECEIVED`), color = "grey") +
     labs(
       title = "Absentee Ballots Received by Date in Frederick County",
       x = "Date",
@@ -138,10 +138,6 @@ frederick_dates|>
       color = "Party"
     ) +
     theme_minimal()
-
-
-
-
 ```
 
 **Q4.** A scatterplot is a type of chart that helps us see relationships between two variables. One variable goes on the x axis, the other on the y axis. For each row/observation in our data, a scatterplot puts a circle (or a "point") where the two variables intersect on a grid.
@@ -163,6 +159,7 @@ We're going to use a scatterplot to get a visual sense of two key variables: bal
 **A4.** Montgomery, Baltimore County and Prince George's County were the top 3 counties with the most ballots sent/ received. All of the counties seem relative to how many ballots got sent to them and how many were received.
 
 ```{r}
+library(ggrepel)
 md_absentee|>
 ggplot()+
   geom_point(aes(x = `TOTAL SENT`, y = `TOTAL RECEIVED`), color = "red", size = 2,)+
@@ -173,6 +170,6 @@ ggplot()+
          caption = "source: Maryland State Board of Elections"
     ) +
     theme_minimal()+
-geom_text(aes(x = `TOTAL SENT`, y = `TOTAL RECEIVED`, label = `COUNTY NAME`),  vjust = -1, hjust = 0.5, size = 2)+
+geom_text_repel(aes(x = `TOTAL SENT`, y = `TOTAL RECEIVED`, label = `COUNTY NAME`), max.overlaps=Inf)+
   geom_smooth(aes(x = `TOTAL SENT`, y = `TOTAL RECEIVED`), method = "lm", se = FALSE, color = "blue")
 ```
