@@ -142,7 +142,7 @@ black_story_data|>
 ### Sentence 5
 
 * **Sentence text**:Black and Hispanic voters are also more likely to experience hurdles, perhaps in part because there tend to be fewer polling places in their neighborhoods. About 24 percent of Black respondents said that they had to stand in line for more than an hour while voting, and Hispanic respondents were more likely to say they had trouble accessing the polling place or couldn’t get off work in time to vote.”
-* **Analysis summary**: The first part shows how many Black people said they had to stand in line for more than an hour and the same for Hispanic voters in the next code section. Then you just delete the filter q18 part to get the total amount of black people. For each output, there are over 100 respondants who have said they waited in line for over an hour to vote. 
+* **Analysis summary**: The first part shows how many Black people said they had to stand in line for more than an hour and the same for Hispanic voters in the next code section. Then you just delete the filter q18 part to get the total amount of black people. For each output, there are over 100 respondents who have said they waited in line for over an hour to vote. 
 
 ```{r}
 filtered_data<- american_voter_data
@@ -152,6 +152,7 @@ filtered_data<- american_voter_data
   print(filtered_data)
   
 ```
+
 ```{r}
   filtered_data<- american_voter_data
   filtered_data|>
