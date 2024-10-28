@@ -68,46 +68,43 @@ print(filtered_data)
 ### Sentence 2
 
 * **Sentence text**: In the survey, we asked voters who have missed at least one national election - which included some people who almost always vote - why they didn't cast a ballot. Nearly a quarter cited some of the structural barriers we mentioned above. But another 31 percent said that they decided not to vote because they disliked the candidates or they thought nothing would change as a result of the election (26 percent).
-* **Analysis summary**: Out of 1,342 people who say they sometimes, rarely, or don't vote in national elections, 765 say that they either dislike the candidates or that nothing will change for them. 403 say they dislike the candidates, while 362 say nothing will change as a result. This is
-similar to the original numbers presented in the text, as 403 is 30% of 1342 and 362 is 27%.
+* **Analysis summary**: When filtering the voter category, the largest amount of responses said they rarely/ never vote, showing that many people believe their vote does not matter. I filtered for questions that asked voters how often they vote and why they did not vote. Out of 1,342 people who say they sometimes, rarely, or don't vote in national elections, 765 say that they either dislike the candidates or that nothing will change for them. 403 say they dislike the candidates, while 362 say nothing will change as a result. This is similar to the original numbers presented in the text, as 403 is 30% of 1342 and 362 is 27%.
 
 ```{r}
-filtered_data <- american_voter_data|>
-  filter(Q26==2 | Q26==3|Q26==4)
-                    
-filtered_data
-filtered_data<-filtered_data|>
-  filter(Q29_1 == 1 | Q29_3 == 1)
-filtered_data
+grep("Q26", names(american_voter_data), value = TRUE)
+
+```
+
+```{r}
+  stwo_data<- american_voter_data|>
+  filter(!is.na(Q26), !is.na(Q29_1), !is.na(Q29_2), !is.na(Q29_3)) |>
+  group_by(voter_category) |>
+  summarise(count=n())
+stwo_data
 ```
 
 ### Sentence 3
 
 * **Sentence text**: They were also likelier than those who vote more regularly to say they couldn’t get off work to vote...
 Also because he doesn’t trust mail-in ballots. “The last time I tried to vote by mail, it didn’t get counted — it was too late,” he said. As a result, Sanchez told us, “I don't know where my ballot is going to end up, if I don't see it put into the voting machine.”
-* **Analysis summary**: When filtering the data, 229 of the respondents chose 5 on the survey for Q29, which has the answer as they wanted to vote but had work/ other obligations or forgot. Furthermore, question 19 asks respondents what they think would make it easier for them to vote. I filtered the responses that have to do with automatically being registered to vote and automatically receiving a mail- in ballot which had thousands of respondents say this would make voting a lot more appealing for them. Comparing these different answers shows what would make voting more easier for those who might not know about mail-in deadlines.
+* **Analysis summary**: Question 29 gave ten answer selections for study participants to choose from when answering why they did not vote in the most recent presidential election which in this case was the 2020 presidential election. Selection 5, also Q29_5 in our code,is the option that says "I wanted to vote, but I didn't have time, couldn't get off work, something came up, or I forgot." Our sentence above for this anaylisis says that "They", people who never vote, are more likely to not vote versus people who vote more often than them, which is the "sporadic group", because they could not get off work which qualifies under selection 5 for question 29. -1 and N/A in the Q29_5 column in this case represents people who did not answer the question, and 1 represents all the people who did based on whether they qualify as rarely/never or sporadic voters. 10.13% of rarely/never voters chose selection 5 for why they didn't vote, and only 2.72% of sporadic voters chose selection 5. This backs up the article's sentence that we chose by showing that approximately 5 times as many rarely/never voters chose selection 5 as sporadic voters.
 
 ```{r}
+american_voter_data|>
+filter(voter_category=="sporadic") |>
+group_by(Q29_5) |>
+summarise(count=n())|>
+mutate(percentages = count/sum(count)*100)
 
-race_data <- american_voter_data|>
-  select(Q29_5)|>
-filter(Q29_5 == 1)
-race_data
 ```
 
 
 ```{r}
-race_data <- american_voter_data|>
-  select(Q19_4)|>
-filter(Q19_4 == 1)
-race_data
-```
-
-```{r}
-race_data <- american_voter_data|>
-  select(Q19_5)|>
-filter(Q19_5 == 1)
-race_data
+american_voter_data|>
+filter(voter_category=="rarely/never") |>
+group_by(Q29_5) |>
+summarise(count=n())|>
+mutate(percentages = count/sum(count)*100)
 ```
 
 
@@ -115,20 +112,31 @@ race_data
 
 * **Sentence text**: A substantial chunk of respondents said they don’t think either party wants people like them to vote. (Twenty-three percent said this of Democrats and 31 percent of Republicans.) Black and Hispanic people were especially likely to say the Republicans don’t want people like them to vote: Fifty-four percent of Black respondents and 35 percent of Hispanic respondents agreed with this statement, compared to just 26 percent of white respondents.
 
-* **Analysis summary**: While this would be the correct way to find the the percentages of people who think each party does/ does not care about their vote, I think one of the issues is that this data set does not specify which race answered to each question. The republican party shows that 33% of respondents say they don't think republicans want them to vote, similar to the 31% in the article. Q15, which is the democratic party, got a number of 21%, but accounting for the people that didn't vote the number should be similar to the 23% in the article.
+* **Analysis summary**: The result of the analysis confirm the findings pretty well. Q14, which represents the republican party, shows that 33%of respondents say they don't think Republicans want them to vote, similar to the 31% in the article. Q15, which is the Democratic party, got 21% but accounting for the people that didn't vote the number should be similar to the 23% in the article. For the indivudal race numbers, I got 54% for black people and 54% for Hispanic people. 54% is right in line with the 54% form the text, and the 29 is close to 34% considering the 5% margin of error.
 
 ```{r}
-american_voter_data|>
-group_by(Q14)|>
-summarise (count=n())|>
-mutate(percent=count/sum(count)*100)
+hispanic_story_data<-american_voter_data|>
+filter(race=="Hispanic")
+
 ```
 
 ```{r}
-american_voter_data|>
-group_by(Q15)|>
-summarise (count=n())|>
-mutate(percent=count/sum(count)*100)
+hispanic_story_data|>
+group_by(Q14)|>
+  summarise(count=n())|>
+mutate(percent= (count/sum(count)*100))
+```
+```{r}
+black_story_data<-american_voter_data|>
+  filter(race=='Black')
+view(american_voter_data)
+```
+
+```{r}
+black_story_data|>
+  group_by(Q14)|>
+  summarise(count=n())|>
+  mutate(percent= (count/sum(count)*100))
 ```
 
 ### Sentence 5
@@ -142,7 +150,9 @@ filtered_data<- american_voter_data
   filter(race== 'Black')|>
   filter(Q18_8 == 1)|>
   print(filtered_data)
-
+  
+```
+```{r}
   filtered_data<- american_voter_data
   filtered_data|>
     filter(race == "Hispanic") |>
