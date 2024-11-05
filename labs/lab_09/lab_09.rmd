@@ -21,6 +21,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r}
 library(tidyverse)
+library(tidycensus)
 library(janitor)
 library(dplyr)
 ```
@@ -108,10 +109,50 @@ Then export each dataframe using `write_csv` and make two (2) choropleth maps in
 
 Compare the two maps. What do you think are the most interesting story ideas in both, and what would you want to know more about? Put the answer below along with the URLs of your maps.
 
-**A3.** 
+**A3.** I used ChatGPT for the first part of this question, up until line 124, because I was unsure how to get started. For the ActBlue map, it is interesting to see that most of the Democratic donations are in Central Maryland, where it is also more populated. In the WinRed map, it is the opposite where counties on the outskirts of Maryland donated more. 
+https://datawrapper.dwcdn.net/xGyeH/1/
+https://datawrapper.dwcdn.net/luqGh/1/
 
 ```{r}
 md_winred_zip_totals<- read_csv("data/md_winred_zip_totals.csv")
 md_actblue_zip_totals<-read.csv("data/md_actblue_zip_totals.csv")
+
+census_api_key("e369fcda419fe9ae1d0c28b51a3573cfe44942e9", install = TRUE, overwrite = TRUE)
+
+md_population <- get_acs(
+  geography = "zip code tabulation area",
+  variables = "B01003_001", 
+  year = 2020,
+  geometry = FALSE
+)|>
+  filter(str_starts(GEOID, "21"))|> 
+  select(zipcode = GEOID, total_population = estimate)
+
+
+md_population <- md_population|>
+  rename(zip = zipcode)
+
+md_winred_zip_totals <- md_winred_zip_totals|> mutate(zip = as.character(zip))
+md_actblue_zip_totals <- md_actblue_zip_totals|> mutate(zip= as.character(zip))
+md_population <- md_population|> mutate(zip = as.character(zip))
+
+
+md_winred_zip_population <- md_winred_zip_totals|>
+  left_join(md_population, by = "zip")
+
+md_actblue_zip_population <- md_actblue_zip_totals|>
+  left_join(md_population, by = "zip")
+
+
+md_winred_population <- md_winred_zip_totals|>
+  mutate(donations_per_1000 = (donations/ total) * 1000)
+
+md_actblue_population <- md_actblue_zip_totals|>
+  mutate(donations_per_1000 = (donations / total) * 1000)
+
+
+write_csv(md_winred_population, "md_winred_per_capita.csv")
+write_csv(md_actblue_population, "md_actblue_per_capita.csv")
+
 
 ```
