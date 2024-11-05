@@ -39,6 +39,7 @@ Let's start with the absolute basics of geographic data: loading and viewing. Lo
 **Task** Run the following code to load packages.
 
 ```{r}
+install.packages("sf")
 library(tidyverse)
 library(sf)
 library(janitor)
@@ -58,7 +59,7 @@ Simlar to `readr`, the `sf` library has functions to read geographic data. In th
 
 ### Task: Load data
 
-**Task** Run the following code to load data. Describe what you see in the answer space below. What columns exist in this data? **Answer**
+**Task** Run the following code to load data. Describe what you see in the answer space below. What columns exist in this data? **Answer** There are 10 columns in this data and the include precinct's and their names and ids. It also includes Congress, Legislatures, Councils and Schools but they are numbers
 
 ```{r}
 pg_precincts <- st_read("data/Election_Precinct_2022_Py.gdb")
@@ -72,7 +73,7 @@ Let's look at these precincts. We have 356 of them, according to this data.
 
 ### Task: Run code
 
-**Task** Run the following code. Describe the output in the space below: what kind of information does it contain? **Answer**
+**Task** Run the following code. Describe the output in the space below: what kind of information does it contain? **Answer** The different precincts and the features of that precinct.
 
 ```{r}
 View(pg_precincts)
@@ -82,7 +83,7 @@ But where in Prince George's County are these places? We can simply plot them on
 
 ### Task: Run code
 
-**Task** Run the following code. Describe the output in the space below. **Answer**
+**Task** Run the following code. Describe the output in the space below. **Answer** The output is a map with coordinates of PG county. It shows the precincts as well.
 
 ```{r}
 pg_precincts |>
@@ -105,7 +106,7 @@ Then load it:
 
 ### Task: Run code
 
-**Task** Run the following code. Describe the output in the space below. **Answer**
+**Task** Run the following code. Describe the output in the space below. **Answer** the library loaded
 
 ```{r}
 # install.packages('tigris')
@@ -116,7 +117,7 @@ Now, let's use the counties() function from tigris to pull down a shapefile of a
 
 ### Task: Run code
 
-**Task** Run the following code. Describe the output in the space below. **Answer**
+**Task** Run the following code. Describe the output in the space below. **Answer** It has a new column called geometry. It also has a lot more data
 
 ```{r}
 
@@ -131,7 +132,7 @@ This county shapefile has all 3233 U.S. counties. We only want the Maryland coun
 
 ### Task: Run code
 
-**Task** Run the following code. Describe the output in the space below. **Answer**
+**Task** Run the following code. Describe the output in the space below. **Answer** It filtered to only MD counties using the state FP number
 
 ```{r}
 md_counties <- counties |>
@@ -143,7 +144,7 @@ To see what this looks like, let's plot it out with ggplot. We can pretty clearl
 
 ### Task: Run code
 
-**Task** Run the following code. Describe the output in the space below. **Answer**
+**Task** Run the following code. Describe the output in the space below. **Answer** a map of MD counties with latitude and longtitude 
 
 ```{r}
 md_counties |>
@@ -175,7 +176,7 @@ Let's dive back into Prince George's precincts and see what more we can find out
 
 ### Task: Run code to load the turnout data from the May 2024 Primary election
 
-**Task** Run the following code. Describe the output in the space below. **Answer**
+**Task** Run the following code. Describe the output in the space below. **Answer**It shows the PG county voter turnout for the July primary election
 
 ```{r}
 primary_24 <- read_csv("data/Official by Party and Precinct.csv") |> clean_names()
@@ -191,7 +192,7 @@ Now we can join the precincts to the turnout data.
 
 ### Task: Run code to join the precinct shapes with the voter turnout data
 
-**Task** Run the following code. Describe the output in the space below. **Answer**
+**Task** Run the following code. Describe the output in the space below. **Answer** It shows the PG county precincts with the voter turnout dataset
 
 ```{r}
 pg_precincts_with_turnout <- pg_precincts |> left_join(pg_turnout, by=c("PRECINCT_ID"="precinct"))
@@ -201,7 +202,7 @@ Now we can use color to distinguish precincts from each other. Let's use the tot
 
 ### Task: Run code
 
-**Task** Run the following code. Describe the output in the space below. **Answer**
+**Task** Run the following code. Describe the output in the space below. **Answer** A lot of voters are not eligible. In the middle it is a higher number
 
 ```{r}
 ggplot() +
@@ -235,7 +236,7 @@ We've got voters by county, so let's load that from the data folder and take a l
 
 ### Task: Run code
 
-**Task** Run the following code. Describe the output in the space below. **Answer**
+**Task** Run the following code. Describe the output in the space below. **Answer** The counties with higher populations are at the top. Montgomery County has the most, followed by Prince George's and Baltimore County
 
 ```{r}
 voters_by_county <- read_csv("data/eligible_voters.csv")
@@ -249,7 +250,7 @@ Next, we'll go out and get population data for each county from tidycensus. The 
 
 ### Task: Run code
 
-**Task** Run the following code. Describe the output in the space below. **Answer**
+**Task** Run the following code. Describe the output in the space below. **Answer** Population from each MD county
 
 ```{r}
 md_county_population <- get_acs(geography = "county",
@@ -263,7 +264,7 @@ Ultimately, we're going to join this county population table with our voters by 
 
 ### Task: Run code
 
-**Task** Run the following code. Describe the output in the space below. **Answer**
+**Task** Run the following code. Describe the output in the space below. **Answer**There is a new column, geometry, that contains the "MULTIPOLYGON" feature. It also shows different coordinates 
 
 ```{r}
 md_county_population <- get_acs(geography = "county",
@@ -283,7 +284,7 @@ But there's a problem. The column in our population data that has county names i
 
 ### Task: Run code
 
-**Task** Run the following code. Describe the output in the space below. **Answer**
+**Task** Run the following code. Describe the output in the space below. **Answer** 
 
 ```{r}
 md_county_population
@@ -297,7 +298,7 @@ Let's clean the population table. We're going to rename the "NAME" column to "Co
 
 ### Task: Run code
 
-**Task** Run the following code. Describe the output in the space below. **Answer**
+**Task** Run the following code. Describe the output in the space below. **Answer**The columns are cleaner and it removed any white spaces that would prevent a join
 
 ```{r}
 md_county_population <- md_county_population |>
@@ -314,7 +315,7 @@ Now we can join them.
 
 ### Task: Run code
 
-**Task** Run the following code. Describe the output in the space below. **Answer**
+**Task** Run the following code. Describe the output in the space below. **Answer**It joined both data frames so we can have the voters per 10k residents in each county
 
 ```{r}
 md_voters_per_10k <- md_county_population |>
@@ -327,7 +328,7 @@ Hang on - there's at least one county with NA values - St. Mary's, which is spel
 
 ### Task: Run code
 
-**Task** Run the following code. Describe the output in the space below. **Answer**
+**Task** Run the following code. Describe the output in the space below. **Answer**It fixed the St. Mary's and Baltimore COunty column so we can mutate it
 
 ```{r}
 md_county_population <- md_county_population |>
@@ -339,7 +340,7 @@ Our final step before visualization, let's calculate the number of voters per 10
 
 ### Task: Run code
 
-**Task** Run the following code. Describe the output in the space below. **Answer**
+**Task** Run the following code. Describe the output in the space below. **Answer** It calculated the number of voters per 10,000 population for each county and sorted from highest to lowest to see what trends we can identify from the table.
 
 ```{r}
 md_voters_per_10k <- md_county_population |>
@@ -356,7 +357,7 @@ Okay, now let's visualize. We're going to build a choropleth map, with the color
 
 ### Task: Run code
 
-**Task** Run the following code. Describe the output in the space below. **Answer**
+**Task** Run the following code. Describe the output in the space below. **Answer**A map of voters per 10k in each MD county
 
 ```{r}
 ggplot() +
@@ -368,7 +369,7 @@ This map is okay, but the color scale makes it hard to draw fine-grained differe
 
 ### Task: Run code
 
-**Task** Run the following code. Describe the output in the space below. **Answer**
+**Task** Run the following code. Describe the output in the space below. **Answer** The colors changed to make it more visually appealing to understand
 
 ```{r}
 ggplot() +
@@ -383,7 +384,7 @@ So let's change the color scale to a "log" scale, which will help us see those d
 
 ### Task: Run code
 
-**Task** Run the following code. Describe the output in the space below. What regional patterns do you see? **Answer**
+**Task** Run the following code. Describe the output in the space below. What regional patterns do you see? **Answer**It helped make the borders a bit more defined 
 
 ```{r}
 ggplot() +
@@ -396,7 +397,7 @@ Let's repeat that for Unaffiliated voters:
 
 ### Task: Run code
 
-**Task** Run the following code. Describe the output in the space below. **Answer**
+**Task** Run the following code. Describe the output in the space below. **Answer**it made a new column for unaffiliated voters per 10k people
 
 ```{r}
 md_voters_per_10k <- md_voters_per_10k |> 
@@ -407,7 +408,7 @@ And then map it:
 
 ### Task: Run code
 
-**Task** Run the following code. Describe the output in the space below. What regional patterns do you see, especially on the ends of the scale? **Answer**
+**Task** Run the following code. Describe the output in the space below. What regional patterns do you see, especially on the ends of the scale? **Answer**The counties with the least UNAF voters are scattered. There is the section in Baltimore as well that is amongst the lowest amount
 
 ```{r}
 ggplot() +
