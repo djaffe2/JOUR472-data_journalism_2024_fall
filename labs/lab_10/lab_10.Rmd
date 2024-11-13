@@ -152,6 +152,17 @@ md_counties |>
 
 **A3**
 
+
+```{r}
+
+original <- md_senate_by_county_24
+
+md_senate_by_county_24 <- original
+
+
+```
+
+
 ```{r}
 md_gov_2018 <- read_csv("data/md_gov_county_18.csv") |>
   as.data.frame() |>
@@ -172,12 +183,12 @@ md_senate_by_county_24 <- md_senate_by_county_24 |>
   as.data.frame() |>
   clean_names() 
 
-md_senate_by_county_24 <- md_senate_by_county_24 |>
+pre_join_md_senate_by_county_24 <-  md_senate_by_county_24 |>
   rename(hogan_pct_2024 = hogan_pct) |>
-  select(geoid, county, hogan_pct_2024) 
+  select(geoid, county_x, hogan_pct_2024) 
 
 
-md_senate_by_county_24 <- md_senate_by_county_24 |>
+md_gov_senate_2018_2024 <- pre_join_md_senate_by_county_24 |>
   left_join(md_gov_2018, by = "geoid") |>
   mutate(hogan_2024_diff = hogan_pct_2024 - hogan_pct_2018)
 ```
