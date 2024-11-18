@@ -22,6 +22,7 @@ library(rvest)
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
+library(janitor)
 library(lubridate)
 ```
 
@@ -66,30 +67,27 @@ You should have 10 releases when finished, not 20.
 Then, write code that finds the most recent release with the word "Campaign" in the title. What election does it refer to?
 
 **A2**
+```{r}
+tibble(
+  title = results |> html_text(trim = TRUE),
+  url = results |> html_attr("href")
+)
+
+filtered_titles <- results |> html_text(trim = TRUE)
+print(filtered_titles[str_detect(filtered_titles, "campaign|Campaign")])
+```
 
 ```{r}
-press_release_url<-"https://osp.maryland.gov/category/press-releases/"
+results<-"https://osp.maryland.gov/category/press-releases/"|>
+  read_html()|>
+html_elements("article a")
 
-pr_data <- press_release_url |>
-  read_html()
-
-titles <- pr_data|>
-  html_elements(".entry-title a")|>
-  html_text()
-
-urls <- pr_data|>
-  html_elements(".entry-title a") |>
-  html_attr("href")
-
-dates <- pr_data|>
-  html_elements(".entry-title") |>
-  html_text() %>%
-  substr(., 1, 10) %>%
-  mdy()  
-
-pr_data <- tibble(title = titles, url = urls, date = dates)
-
-pr_data
+tibble(
+  title=results|> html_text(trim=TRUE),
+  url=results|> html_attr("href")
+)|>
+  separate(title, c("date","title"), ":")|>
+  filter(str_detect(title, "campaign|Campaign"))
 
 ``` 
 
@@ -103,8 +101,32 @@ When you're done, rename the columns so they make sense, then make sure the date
 
 Finally, tell me what questions you could ask of this data, and what other information about it would be useful to have. Be creative.
 
-**A3**
+**A3** Are there particular months or years with higher activity, possibly tied to legislative sessions or major events?
+What are the most common topics or themes in the press release titles?
+Are certain words or phrases more prevalent during specific periods?
 
 ```{r}
+html<- read_html("https://www.cardin.senate.gov/?post_type=press-releases")
 
+dates<- html|>
+  html_elements ("h5")|>
+  html_text()|>
+  as_tibble()
+
+titles<- html|>
+  html_elements("h3")|>
+  html_text(trim= TRUE)|>
+  as_tibble()
+
+urls<-html|>
+  html_elements("h3 a")|>
+  html_attr("href")|>
+  as_tibble()
+
+dates|>
+  bind_cols(titles, urls)|>
+  clean_names()|>
+  rename(date= value_1,
+         title= value_2,
+         url=value_3)
 ```
