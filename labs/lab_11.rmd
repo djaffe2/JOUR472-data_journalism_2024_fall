@@ -93,7 +93,7 @@ pr_data <- tibble(title = titles, url = urls, date = dates)
 
 pr_data
 
-```
+``` 
 
 **Q3** Sen. Ben Cardin, D-Maryland, has posted hundreds of press releases at <https://www.cardin.senate.gov/?post_type=press-releases>. It would be great to have all of them in a dataframe that has the following columns: date, title and url.
 
