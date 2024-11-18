@@ -81,14 +81,12 @@ urls <- pr_data|>
   html_elements(".entry-title a") |>
   html_attr("href")
 
-# Extract the dates from the title (first 10 characters, assuming format "Month day, year")
 dates <- pr_data|>
   html_elements(".entry-title") |>
   html_text() %>%
   substr(., 1, 10) %>%
-  mdy()  # Convert to Date format
+  mdy()  
 
-# Create the dataframe
 pr_data <- tibble(title = titles, url = urls, date = dates)
 
 pr_data
