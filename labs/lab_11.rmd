@@ -68,28 +68,24 @@ Then, write code that finds the most recent release with the word "Campaign" in 
 
 **A2**
 ```{r}
-tibble(
-  title = results |> html_text(trim = TRUE),
-  url = results |> html_attr("href")
-)
 
-filtered_titles <- results |> html_text(trim = TRUE)
-print(filtered_titles[str_detect(filtered_titles, "campaign|Campaign")])
-```
-
-```{r}
 results<-"https://osp.maryland.gov/category/press-releases/"|>
   read_html()|>
-html_elements("article a")
+  html_elements("article a")
 
-tibble(
-  title=results|> html_text(trim=TRUE),
-  url=results|> html_attr("href")
-)|>
-  separate(title, c("date","title"), ":")|>
+state_prosecutor_url<- tibble(
+  title = results |> html_text(trim = TRUE),
+  url = results |> html_attr("href")
+) |>
+  mutate(title=trimws(title))|>
+  filter(!str_detect(title, "Read the Rest…"))|>
+   separate(title, c("date","title"), ":")|>
   filter(str_detect(title, "campaign|Campaign"))
 
-``` 
+state_prosecutor_url
+#print(filtered_titles[str_detect(filtered_titles, "campaign|Campaign")])
+```
+
 
 **Q3** Sen. Ben Cardin, D-Maryland, has posted hundreds of press releases at <https://www.cardin.senate.gov/?post_type=press-releases>. It would be great to have all of them in a dataframe that has the following columns: date, title and url.
 
