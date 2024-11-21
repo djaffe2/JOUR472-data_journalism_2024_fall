@@ -66,7 +66,7 @@ You should have 10 releases when finished, not 20.
 
 Then, write code that finds the most recent release with the word "Campaign" in the title. What election does it refer to?
 
-**A2**
+**A2** Gubernatorial election
 ```{r}
 
 results<-"https://osp.maryland.gov/category/press-releases/"|>
