@@ -15,6 +15,9 @@ options(scipen=999)
 library(tidyverse)
 library(dplyr)
 library(readr)
+library(ggplot2)
+library(janitor)
+library(stringr)
 
 ```
 2016 data has 104,046 rows and 19 columns
@@ -27,19 +30,53 @@ list.files("data")
 
 ```
 
+
 ```{r pressure, echo= FALSE}
 
 county_2024 <- read_csv("data/earlyvote_county_24.csv")
-county_2024
+county_2024 <- county_2024[-c(1), ] 
+
+
+county_2024 <- county_2024|>
+  mutate(across(-c(County, PARTY), ~ as.numeric(str_remove_all(., "[%,]"))))|>
+  clean_names()
+  
+county_2024_clean <- county_2024 |>
+  filter(party == "TOTAL") |>
+  mutate(county = str_trim(county)) |>
+  filter(!is.na(county)) |>
+  select(County = county, `%Total` = percent_day8) |>
+  mutate(`%Total` = as.numeric(`%Total`))
+
+glimpse(county_2024_clean)
 ```
+
 ```{r}
 county_2020 <- read_csv("data/earlyvote_county_20.csv")
+county_2020<-county_2020|>
+ mutate(across(-'County', ~ as.numeric(
+    str_remove_all(., "[%,]") 
+  )))|>
+    clean_names()
+
 county_2020
 ```
 
 ```{r}
 county_2016 <- read_csv("data/earlyvote_county_16.csv")
+county_2016<-county_2016|>
+ mutate(across(-`County Name`, ~ as.numeric(
+    str_remove_all(., "[%,]")
+  )))|>
+  clean_names()
 county_2016
+```
+
+```{r}
+combined_data <- bind_rows(county_2016, county_2020, county_2024)
+
+combined_data
+
 ```
 
 
