@@ -7,17 +7,23 @@ output: html_notebook
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r echo=FALSE}
+census_api_key("e369fcda419fe9ae1d0c28b51a3573cfe44942e9", overwrite=TRUE, install= TRUE)
+```
+
 ```{r}
 # Turn off scientific notation
 options(scipen=999)
 
 # Load libraries
 library(tidyverse)
-library(dplyr)
-library(readr)
-library(ggplot2)
+library(tidytext)
 library(janitor)
+library(lubridate)
+library(tidycensus)
+library(dplyr)
 library(stringr)
+library(ggplot2)
 
 ```
 2016 data has 104,046 rows and 19 columns
@@ -26,59 +32,194 @@ library(stringr)
 
 In terms of time frame, we have access to the General Election data from 2016, 2020 and 2024, which will allow us to explore the change in early voting over different election cycles. Because we have access to different time frames of data, there aren't any looming limits for the data. Some of our questions reference demographics, (ie "How do economic factors like household income and unemployment rates impact early voter voter turnout across Maryland counties?" and "Are certain counties or demographic groups turning out in higher numbers for early voting compared to previous elections?") and the data set does include some demographic data, including gender, political party affiliation and age group, we do lack other common demographics such as race, household income and unemployment rates. What we may have to do is locate that demographic data from individual counties and compare it to the early voting data we have now.
 ```{r}
-list.files("data")
+county_2024 <- read_csv("data/2024_early_voter_by_county.csv")
+county_2020 <- read_csv("data/2020_early_voter_by_county.csv")
+county_2016 <- read_csv("data/2016_early_voter_by_county.csv")
+
+early_voting_16 <- read_csv("data/2016_EarlyVoting_RAW_data.csv")
+early_voting_20 <-read_csv("data/2020_EarlyVoting_RAW_data.csv")
+early_voting_2024 <- read_csv("data/2024_EarlyVoting_RAW_data.csv")
+
+party_24 <- read_csv("data/early_voting_by_party.csv")
 
 ```
+Most newsworthy thing about the data so far.
+Change in early voting from 2020 to 2024: -7.504786 %
+Change in early voting from 2016 to 2020: 44.98002 %
+Change in early voting from 2016 to 2024: 27.02911 %
+
+There was an obvious jump in early voting from 2016 to 2020, I assume due to the pandemic. However I assumed that early voting levels would level back out to 2016 numbers, but it seems that they remain high, with a 27% increase from 2016 to 2024 and only a 7.5% decrease from 2020. 
+
+Also the three counties with the highest percentage of early voters, all fell in the top 5 for lowest unemployment rate 
+#2 Talbot	Unemploymet: 3.173432		early voter: 32.80	
+#3Calvert	Unemploymet 3.180552		early voter 33.65	
+#5 Queen Anne's	Unemploymet 3.633084		early voter 33.87
 
 
 ```{r pressure, echo= FALSE}
+#question 4- How does early voting turnout correlate with registered party affiliation across Maryland counties? 
 
-county_2024 <- read_csv("data/earlyvote_county_24.csv")
-county_2024 <- county_2024[-c(1), ] 
-
-
-county_2024 <- county_2024|>
-  mutate(across(-c(County, PARTY), ~ as.numeric(str_remove_all(., "[%,]"))))|>
-  clean_names()
+early_voting_2024 |>
+  clean_names() |> 
+  group_by(county_name) |> # more than 200,000 rows of data (as this data set originally had each early voting location as its own individual data point.) Now only 24 rows.
+   summarise(
+    total_voters = n(),
+    dem = sum(party_code == "DEM", na.rm = TRUE),
+    rep = sum(party_code == "REP", na.rm = TRUE),
+    oth = sum(party_code == "OTH", na.rm = TRUE),
+    una = sum(party_code == "UNA", na.rm = TRUE),
+    lib = sum(party_code == "LIB", na.rm = TRUE)
+  ) |>
   
-county_2024_clean <- county_2024 |>
-  filter(party == "TOTAL") |>
-  mutate(county = str_trim(county)) |>
-  filter(!is.na(county)) |>
-  select(County = county, `%Total` = percent_day8) |>
-  mutate(`%Total` = as.numeric(`%Total`))
-
-glimpse(county_2024_clean)
+  #there was a column called "party_code" which either had a DEM, REP, OTH and UNA, to signify political party. to make my own columns, i summarized to create the new columns, which just have the total number of early voters by political party. 
+  mutate(
+    percent_dem = (dem / total_voters) * 100,
+    percent_rep = rep / total_voters * 100
+  ) |> 
+  #made new columns to show what percent of the early voters in each county were Dem and which percent were Rep. Does not seem like a very significant trend to me here. The counties that tend to lean red seem to have a higher percentage of Rep early voters and vice-versa. 
+  arrange(desc(percent_dem))
 ```
 
 ```{r}
-county_2020 <- read_csv("data/earlyvote_county_20.csv")
-county_2020<-county_2020|>
- mutate(across(-'County', ~ as.numeric(
-    str_remove_all(., "[%,]") 
-  )))|>
-    clean_names()
 
-county_2020
+#Question 3: Are certain counties turning out in higher numbers for early voting compared to previous elections? 
+#For each year, I cleaned the data, made the percent total number a DBL and renamed the percent total to its respective year. I selected only the county and the total percent of eligible voters who voter early. For this question, the total number of voters on any given day was not needed. 
+# Check the column names
+colnames(county_2024)
+
+# Clean and prepare 2024 data
+
+new_county_2024 <- county_2024 |> 
+  clean_names() |> 
+  select(county_name, percent_total) |> 
+  mutate(percent_total = as.numeric(str_replace(percent_total, "%", ""))) |> 
+  rename(percent_total_24 = percent_total) |> 
+  arrange(desc(percent_total_24))
+  
+
+
+new_county_2020 <- county_2020 |> 
+  clean_names() |> 
+  select(county, percent_total) |> 
+  mutate(percent_total = as.numeric(str_replace(percent_total, "%", ""))) |> 
+  rename(percent_total_20 = percent_total, county_name = county) |> 
+  arrange(desc(percent_total_20))
+
+new_county_2016 <- county_2016 |> 
+  clean_names() |> 
+  select(county_name, percent_total) |> 
+  mutate(percent_total = as.numeric(str_replace(percent_total, "%", ""))) |> 
+  rename(percent_total_16 = percent_total) |> 
+  arrange(desc(percent_total_16))
+
+# next I combined the three datasets into one, called Question three final. 
+q_3_final <- new_county_2024 |> 
+  left_join(new_county_2020, by = "county_name") |> 
+  left_join(new_county_2016, by = "county_name")
+
+#here I create three new columns to show the three different possible percent changes. (16 to 20, 16 to 24 and 20 to 24.)
+q_3_final <-q_3_final |>
+  mutate( 
+    percent_change_24_20 = ((percent_total_24 - percent_total_20) / percent_total_20) * 100) |>
+  mutate( 
+    percent_change_24_16 =  ((percent_total_24 - percent_total_16) / percent_total_16) * 100) |>
+  mutate( 
+    percent_change_20_16 =  ((percent_total_20 - percent_total_16) / percent_total_16) * 100) |>
+  arrange(desc(percent_change_24_16))
+  
+  
+  q_3_final
+ 
+```
+Question 1: What is the percentage change of early voters from an election prior to covid (or 2020) to after covid? 
+Answer: This is quite similar to question three. You can look at the percent change for each county, but here is the total percent change 
+
+```{r}
+total_percent_changes <- q_3_final |>
+  summarise(
+   avg_change_24_20 = mean(percent_change_24_20, na.rm = TRUE),
+    avg_change_24_16 = mean(percent_change_24_16, na.rm = TRUE),
+    avg_change_20_16 = mean(percent_change_20_16, na.rm = TRUE)
+  )
+
+total_percent_changes
+```
+#Question 5 
+#How do economic factors like median income and unemployment rates impact early voter turnout across Maryland counties? 
+
+```{r}
+
+md_data <- get_acs(
+  geography = "county",
+  variables = c(
+    unemployment = "B23025_005",
+    labor_force = "B23025_003",
+    median_income = "B19013_001"
+  ),
+  state = "MD",
+  year = 2022,
+  geometry = FALSE
+) |>
+  rename(county_name = NAME) |>
+  
+  mutate(
+    # Clean up county names by removing " County, Maryland"
+    county_name = gsub(" County, Maryland", "", county_name),
+    # Rename 'Baltimore' to 'Baltimore County'
+    county_name = gsub("^Baltimore$", "Baltimore County", county_name),
+    # Rename 'Baltimore city, Maryland' to 'Baltimore City'
+    county_name = gsub("Baltimore city, Maryland", "Baltimore City", county_name)
+  ) |>
+  
+  group_by(GEOID, county_name, variable) %>%
+  summarise(
+    estimate = first(estimate),  
+    .groups = 'drop'  
+  ) |>
+  pivot_wider(
+    names_from = variable,    
+    values_from = estimate,    
+    values_fill = list(estimate = NA)  
+  ) |>
+  
+  mutate(
+    unemployment_rate = (unemployment/labor_force) * 100
+  ) |>
+  select(county_name, unemployment_rate, median_income)|> 
+  
+  arrange(county_name)
+
+ 
+# chatgpt was used for this mutate function. I was unsure how to fix all the names of the counties and keep Baltimore County and make Baltimore City correct so i asked how to change the county_names to fit the format so i could bind this data set to the early voting data set.   
+ 
+
+md_data
+  
 ```
 
 ```{r}
-county_2016 <- read_csv("data/earlyvote_county_16.csv")
-county_2016<-county_2016|>
- mutate(across(-`County Name`, ~ as.numeric(
-    str_remove_all(., "[%,]")
-  )))|>
-  clean_names()
-county_2016
+q_5_final <- md_data |> 
+  left_join(new_county_2024, by = "county_name") |>
+  arrange(unemployment_rate)
+
+q_5_final
 ```
+
+Question 2: What is the relationship between the proportion of eligible voters and early voter turnout in recent elections, and how do demographics explain differences across counties?
+Answer: Counties with more eligible voters tend to have higher early voting turnout. Demographics like income, unemployment, and party affiliation also explain differences between counties.
 
 ```{r}
-combined_data <- bind_rows(county_2016, county_2020, county_2024)
+# Calculate proportion and correlation
+early_voting <- county_2024 |> 
+  clean_names() |> 
+  mutate(proportion = total_voters / population * 100)
 
-combined_data
+# Summarize key demographics
+summary <- early_voting |> 
+  select(county_name, median_income, unemployment_rate, percent_total) |> 
+  arrange(-percent_total)
+
+print(summary)
 
 ```
-
-
-
 
