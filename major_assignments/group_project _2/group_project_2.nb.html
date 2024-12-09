@@ -1962,12 +1962,11 @@ could be driven by efforts to make early voting easier or simply more
 interest in getting involved.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG4jUXVlc3Rpb24gMzogQXJlIGNlcnRhaW4gY291bnRpZXMgdHVybmluZyBvdXQgaW4gaGlnaGVyIG51bWJlcnMgZm9yIGVhcmx5IHZvdGluZyBjb21wYXJlZCB0byBwcmV2aW91cyBlbGVjdGlvbnM/IFxuI0ZvciBlYWNoIHllYXIsIEkgY2xlYW5lZCB0aGUgZGF0YSwgbWFkZSB0aGUgcGVyY2VudCB0b3RhbCBudW1iZXIgYSBEQkwgYW5kIHJlbmFtZWQgdGhlIHBlcmNlbnQgdG90YWwgdG8gaXRzIHJlc3BlY3RpdmUgeWVhci4gSSBzZWxlY3RlZCBvbmx5IHRoZSBjb3VudHkgYW5kIHRoZSB0b3RhbCBwZXJjZW50IG9mIGVsaWdpYmxlIHZvdGVycyB3aG8gdm90ZXIgZWFybHkuIEZvciB0aGlzIHF1ZXN0aW9uLCB0aGUgdG90YWwgbnVtYmVyIG9mIHZvdGVycyBvbiBhbnkgZ2l2ZW4gZGF5IHdhcyBub3QgbmVlZGVkLiBcbiMgQ2hlY2sgdGhlIGNvbHVtbiBuYW1lc1xuY29sbmFtZXMoY291bnR5XzIwMjQpXG5gYGAifQ== -->
-<pre class="r"><code>
-#Question 3: Are certain counties turning out in higher numbers for early voting compared to previous elections? 
-#For each year, I cleaned the data, made the percent total number a DBL and renamed the percent total to its respective year. I selected only the county and the total percent of eligible voters who voter early. For this question, the total number of voters on any given day was not needed. 
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI0ZvciBlYWNoIHllYXIsIEkgY2xlYW5lZCB0aGUgZGF0YSwgbWFkZSB0aGUgcGVyY2VudCB0b3RhbCBudW1iZXIgYSBEQkwgYW5kIHJlbmFtZWQgdGhlIHBlcmNlbnQgdG90YWwgdG8gaXRzIHJlc3BlY3RpdmUgeWVhci4gSSBzZWxlY3RlZCBvbmx5IHRoZSBjb3VudHkgYW5kIHRoZSB0b3RhbCBwZXJjZW50IG9mIGVsaWdpYmxlIHZvdGVycyB3aG8gdm90ZXIgZWFybHkuIEZvciB0aGlzIHF1ZXN0aW9uLCB0aGUgdG90YWwgbnVtYmVyIG9mIHZvdGVycyBvbiBhbnkgZ2l2ZW4gZGF5IHdhcyBub3QgbmVlZGVkLiBcbiMgQ2hlY2sgdGhlIGNvbHVtbiBuYW1lc1xuY29sbmFtZXMoY291bnR5XzIwMjQpXG5cbmBgYCJ9 -->
+<pre class="r"><code>#For each year, I cleaned the data, made the percent total number a DBL and renamed the percent total to its respective year. I selected only the county and the total percent of eligible voters who voter early. For this question, the total number of voters on any given day was not needed. 
 # Check the column names
-colnames(county_2024)</code></pre>
+colnames(county_2024)
+</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcImNvdW50eV9uYW1lXCIgICAgICBcImRheTFcIiAgICAgICAgICAgICBcInBlcmNlbnRfZGF5MVwiICAgICBcImRheTJcIiAgICAgICAgICAgICBcInBlcmNlbnRfZGF5MlwiICAgICBcImRheTNcIiAgICAgICAgICAgIFxuIFs3XSBcInBlcmNlbnRfZGF5M1wiICAgICBcImRheTRcIiAgICAgICAgICAgICBcInBlcmNlbnRfZGF5NFwiICAgICBcImRheTVcIiAgICAgICAgICAgICBcInBlcmNlbnRfZGF5NVwiICAgICBcImRheTZcIiAgICAgICAgICAgIFxuWzEzXSBcInBlcmNlbnRfZGF5NlwiICAgICBcImRheTdcIiAgICAgICAgICAgICBcInBlcmNlbnRfZGF5N1wiICAgICBcImRheThcIiAgICAgICAgICAgICBcInBlcmNlbnRfZGF5OFwiICAgICBcInRvdGFsXCIgICAgICAgICAgIFxuWzE5XSBcInBlcmNlbnRfdG90YWxcIiAgICBcImVsaWdpYmxlX2FjdGl2ZXNcIlxuIn0= -->
 <pre><code> [1] &quot;county_name&quot;      &quot;day1&quot;             &quot;percent_day1&quot;     &quot;day2&quot;             &quot;percent_day2&quot;     &quot;day3&quot;            
@@ -1975,60 +1974,6 @@ colnames(county_2024)</code></pre>
 [13] &quot;percent_day6&quot;     &quot;day7&quot;             &quot;percent_day7&quot;     &quot;day8&quot;             &quot;percent_day8&quot;     &quot;total&quot;           
 [19] &quot;percent_total&quot;    &quot;eligible_actives&quot;</code></pre>
 <!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBDbGVhbiBhbmQgcHJlcGFyZSAyMDI0IGRhdGFcblxubmV3X2NvdW50eV8yMDI0IDwtIGNvdW50eV8yMDI0IHw+IFxuICBjbGVhbl9uYW1lcygpIHw+IFxuICBzZWxlY3QoY291bnR5X25hbWUsIHBlcmNlbnRfdG90YWwpIHw+IFxuICBtdXRhdGUocGVyY2VudF90b3RhbCA9IGFzLm51bWVyaWMoc3RyX3JlcGxhY2UocGVyY2VudF90b3RhbCwgXCIlXCIsIFwiXCIpKSkgfD4gXG4gIHJlbmFtZShwZXJjZW50X3RvdGFsXzI0ID0gcGVyY2VudF90b3RhbCkgfD4gXG4gIGFycmFuZ2UoZGVzYyhwZXJjZW50X3RvdGFsXzI0KSlcbiAgXG5cblxubmV3X2NvdW50eV8yMDIwIDwtIGNvdW50eV8yMDIwIHw+IFxuICBjbGVhbl9uYW1lcygpIHw+IFxuICBzZWxlY3QoY291bnR5LCBwZXJjZW50X3RvdGFsKSB8PiBcbiAgbXV0YXRlKHBlcmNlbnRfdG90YWwgPSBhcy5udW1lcmljKHN0cl9yZXBsYWNlKHBlcmNlbnRfdG90YWwsIFwiJVwiLCBcIlwiKSkpIHw+IFxuICByZW5hbWUocGVyY2VudF90b3RhbF8yMCA9IHBlcmNlbnRfdG90YWwsIGNvdW50eV9uYW1lID0gY291bnR5KSB8PiBcbiAgYXJyYW5nZShkZXNjKHBlcmNlbnRfdG90YWxfMjApKVxuXG5uZXdfY291bnR5XzIwMTYgPC0gY291bnR5XzIwMTYgfD4gXG4gIGNsZWFuX25hbWVzKCkgfD4gXG4gIHNlbGVjdChjb3VudHlfbmFtZSwgcGVyY2VudF90b3RhbCkgfD4gXG4gIG11dGF0ZShwZXJjZW50X3RvdGFsID0gYXMubnVtZXJpYyhzdHJfcmVwbGFjZShwZXJjZW50X3RvdGFsLCBcIiVcIiwgXCJcIikpKSB8PiBcbiAgcmVuYW1lKHBlcmNlbnRfdG90YWxfMTYgPSBwZXJjZW50X3RvdGFsKSB8PiBcbiAgYXJyYW5nZShkZXNjKHBlcmNlbnRfdG90YWxfMTYpKVxuXG4jIG5leHQgSSBjb21iaW5lZCB0aGUgdGhyZWUgZGF0YXNldHMgaW50byBvbmUsIGNhbGxlZCBRdWVzdGlvbiB0aHJlZSBmaW5hbC4gXG5xXzNfZmluYWwgPC0gbmV3X2NvdW50eV8yMDI0IHw+IFxuICBsZWZ0X2pvaW4obmV3X2NvdW50eV8yMDIwLCBieSA9IFwiY291bnR5X25hbWVcIikgfD4gXG4gIGxlZnRfam9pbihuZXdfY291bnR5XzIwMTYsIGJ5ID0gXCJjb3VudHlfbmFtZVwiKVxuXG4jaGVyZSBJIGNyZWF0ZSB0aHJlZSBuZXcgY29sdW1ucyB0byBzaG93IHRoZSB0aHJlZSBkaWZmZXJlbnQgcG9zc2libGUgcGVyY2VudCBjaGFuZ2VzLiAoMTYgdG8gMjAsIDE2IHRvIDI0IGFuZCAyMCB0byAyNC4pXG5xXzNfZmluYWwgPC1xXzNfZmluYWwgfD5cbiAgbXV0YXRlKCBcbiAgICBwZXJjZW50X2NoYW5nZV8yNF8yMCA9ICgocGVyY2VudF90b3RhbF8yNCAtIHBlcmNlbnRfdG90YWxfMjApIC8gcGVyY2VudF90b3RhbF8yMCkgKiAxMDApIHw+XG4gIG11dGF0ZSggXG4gICAgcGVyY2VudF9jaGFuZ2VfMjRfMTYgPSAgKChwZXJjZW50X3RvdGFsXzI0IC0gcGVyY2VudF90b3RhbF8xNikgLyBwZXJjZW50X3RvdGFsXzE2KSAqIDEwMCkgfD5cbiAgbXV0YXRlKCBcbiAgICBwZXJjZW50X2NoYW5nZV8yMF8xNiA9ICAoKHBlcmNlbnRfdG90YWxfMjAgLSBwZXJjZW50X3RvdGFsXzE2KSAvIHBlcmNlbnRfdG90YWxfMTYpICogMTAwKSB8PlxuICBhcnJhbmdlKGRlc2MocGVyY2VudF9jaGFuZ2VfMjRfMTYpKVxuICBcbiAgXG4gIHFfM19maW5hbFxuYGBgIn0= -->
-<pre class="r"><code># Clean and prepare 2024 data
-
-new_county_2024 &lt;- county_2024 |&gt; 
-  clean_names() |&gt; 
-  select(county_name, percent_total) |&gt; 
-  mutate(percent_total = as.numeric(str_replace(percent_total, &quot;%&quot;, &quot;&quot;))) |&gt; 
-  rename(percent_total_24 = percent_total) |&gt; 
-  arrange(desc(percent_total_24))
-  
-
-
-new_county_2020 &lt;- county_2020 |&gt; 
-  clean_names() |&gt; 
-  select(county, percent_total) |&gt; 
-  mutate(percent_total = as.numeric(str_replace(percent_total, &quot;%&quot;, &quot;&quot;))) |&gt; 
-  rename(percent_total_20 = percent_total, county_name = county) |&gt; 
-  arrange(desc(percent_total_20))
-
-new_county_2016 &lt;- county_2016 |&gt; 
-  clean_names() |&gt; 
-  select(county_name, percent_total) |&gt; 
-  mutate(percent_total = as.numeric(str_replace(percent_total, &quot;%&quot;, &quot;&quot;))) |&gt; 
-  rename(percent_total_16 = percent_total) |&gt; 
-  arrange(desc(percent_total_16))
-
-# next I combined the three datasets into one, called Question three final. 
-q_3_final &lt;- new_county_2024 |&gt; 
-  left_join(new_county_2020, by = &quot;county_name&quot;) |&gt; 
-  left_join(new_county_2016, by = &quot;county_name&quot;)
-
-#here I create three new columns to show the three different possible percent changes. (16 to 20, 16 to 24 and 20 to 24.)
-q_3_final &lt;-q_3_final |&gt;
-  mutate( 
-    percent_change_24_20 = ((percent_total_24 - percent_total_20) / percent_total_20) * 100) |&gt;
-  mutate( 
-    percent_change_24_16 =  ((percent_total_24 - percent_total_16) / percent_total_16) * 100) |&gt;
-  mutate( 
-    percent_change_20_16 =  ((percent_total_20 - percent_total_16) / percent_total_16) * 100) |&gt;
-  arrange(desc(percent_change_24_16))
-  
-  
-  q_3_final</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MjUsIm5jb2wiOjcsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiMjUgw5cgNyJdfX0sInJkZiI6Ikg0c0lBQUFBQUFBQUEzVldDMUFUWnhBK0NTRVFRV2dSbEFvYUZTdktLdzlJQWdUY0JEQ2dvb0FvVWxIbkVvNGtZN2pESXhpUStzQ0JtZnBBdFBXRnJRNis3YWhVYloxaWErV016dWdvZElaYXhRZTF2cWhhTzVVWlI2WHRWSHFYL3k1UVJ2L0pQN245ZHYvZC9YWXYveVkvWTRGS3VrQ0tZWmdJOC9iMndrUmk5aEVUenl1WUhxdkZNQmJBc0dHWU4rYkhmVmV4UnNIc2c0VGRRZXdPNHhYU1FyekNhaU10RG9ya0VWKzkzVTVZY0xLYWx5WHB1SDA1UVR0NDBYOHViaU1kc2h5Y3JwNWNNV0JDMDVUZHpvdmlkTUpzRXdTSmtkVVJEdUc0TDJ0SzJXMGtJY2lGTmpOVnhtNUJua3VWRVhRRklkajdUYWVKRW9LMm1aY0tDV2RRdE5sS1ZEZ0lXc2hJVDVLRVRFOVhraVdFRU5XdmtMVWFiQ1JKdCtLMG5mQmtuSVhUcFJSZElyaklxeVFJVXNZNThwQVNGOHdwME0vaUJlK1pCQ21rRkdUQTdRNWJHVVVUc25TcWtuUUloZklwd08wbVNyQ1M1bENrdzhLUjhlaXpLQ2Z1Q1JtWVM5dElNeUV6RWhSdEdZZzZZcEJ6Ryt1YVJiaHVRZEo0WTh2SUZmZEJ2a09hV3I2L0MrQ2FpbHN3YlEzWGN3eFNESTNGVVM4dlFGTG0yTmE4Wi9XUUhQWFMxVmc4QlpKWVlXeHJQbWl2Y01la2tGVEp3bEd2UUNOR2RvbXRiZ1BRZHJzUGdJWU53a1lDSGEvWC9la0dBSjRYY3dhZ09jTDdQVlRLTFZEemNhQ1VseDkyc1FrZThNVFJmb0g4VG0zblZvZUhqNEszU3l4RWZCSURrZitVTFNoZkhTQmVtbWhXelBzRGpBcUU2K2NndTlSZWxrM3FNdER2NHRLdEFaMlZ6OE9KL0tWOGplb0RLdlNkeHZzeGJIVG5BWmt6M1BWWTNjdEZrZXdET00zWHBSSDVOMnhGZFZDRm8veVQvK1hNVXlGUmp1TEdvbnA1K0V4eGwyc2NqT2ZqcVc0MXNXc1hLRnRRL2VSbXhGZk8xMC9CeDFIeTlWWHlzcW9LOVVOSklsekI4MHFJUTdMSy9ScGtnYVlUMVNNSlIrOUZtZ3YxWDgyZlMrcERmalNqVUQzMGFTZy9iVG5LWDdjUzhVbmg0eXJRZStQaGs2RUxPOTlqeW1IVUJtMms4NVVGY2g1SlQ5SHBPeUJtN2VMSm14WnNaZno5QXU4d20zdGhncXltemJmMktaUFo4YWp1eXpZTms5ejlZc0tVYno1bEZLcnFOTmZuelV6S2laN29yczlTR0dYZi9YMWoxUFdNWHJ4SUxkbFR6RVRXbWg0V0hTUVozWVVYQ3cvWGJtZkNhM05QM3VvVU0ycHhmY3h0Znp1VDROZ2ZNR2JtL3RWOXFEK01adHFEYlQrM3Y4K011dml3N2RqR2RtYXlNNi9yNG9xUFFIWHBiTTJsczZ1WTBHT2QvcnNyQ0pCUGREVWY3L05tSWxjOU9IN1h2OFhEcDBnOHVyTDB6QU1vVEI3K0pMNjVEZkx3eFZkVzFGMkh2S2daRFdUOEpNamR1ajU0aFBvb1pIZkpNdGdQWkgxODVYbm91UWlBZTY0ZkFyM1kzOXZsaHRTcnZ0Y2g3Y0pUVTgyOEVOQStQdmtCZkhjQ3RPZHJiM3pTZGhZMDh0Zk51d3pWb0RwOTRPRHBBM3RCc2ZkMlU5VzJKb2orYXdOeFQ1WU5rZG9kSGFXcVZBaDVQais2eWRqUjl1TGJnTjlpRnZZd1FlRW1yM0o3QWhQY3RLWC9WbjgrRTdZNHMwRjVhZzB6S2ROSXJYMjJuWmxrdGZyKy90TXNSbTA5bktpWjBlamhrNm01K1l2TDd6S1k2cHp2ZFJ1WHdXaVQ2SzZ6ZHprWXJ4NEsweXc2Qi9taklxNG5pR1NRdnE0RjFyVVlvS1RlRmQ5WmxBd0ZyVHMzYlBaWkNiT1BUTi9UVTFjR0JZbFBkdFp2M3dRemcyZTc1SUdOTUQ4N2VlVDlqS05nMlB1cmQyN01ZY2dUeFhlSTR0c2grVWlkMWJmSkg0eWhWeG5ZSklGMDlVN256WUE1UW45QTk5V2RNMHMzbkFJczYvc1BJU1FOeHI2ZWV1M0d4QWdtOGNlL0czYS9qR0JDQWhldHorNXVZalRoLzBSWG5WY3gwV0ZGb1MwK25VUEdsSmpFeTlnN0dvMG9DUThPTjd0djJTV2NUcmlDeXduMmVpY2RTeHlVQTdjdlVTYThBNWUvSFZlb2VYeWtnSnV0T0draFdFY0RaOTZpZS9jNU9hZjdQeGMvbW5MR0NYd0MyTzNGWGRYOS9mMlBoNUkyMi9FS2diUUFTa3R3Qng1WFNuT2NNZXpOa0NNU3F0eGhvMGoya0pjdzFLVnVOZHFESFEyamh3QkJsU1NYVlVtczJWcEpMbzFWcW9mb1JlV2taWkEvak05K21QdFB3OEN6QktYazFUK2tXOTZFMlNvTWN4K0N0QXlNZXJFZE4za0d0S2lFV0M2TVBMWlE3anJGbGJNajBUTS9XYlFpenQwdkFURlRkZ0Z4bHdSNzh4L0o5YkRLQWdrQUFBPT0ifQ== -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["county_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["percent_total_24"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["percent_total_20"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["percent_total_16"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["percent_change_24_20"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["percent_change_24_16"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["percent_change_20_16"],"name":[7],"type":["dbl"],"align":["right"]}],"data":[{"1":"Washington","2":"25.13","3":"17.89","4":"12.56","5":"40.469536","6":"100.079618","7":"42.436306"},{"1":"Allegany","2":"16.59","3":"21.34","4":"8.60","5":"-22.258669","6":"92.906977","7":"148.139535"},{"1":"Calvert","2":"33.65","3":"21.06","4":"19.85","5":"59.781576","6":"69.521411","7":"6.095718"},{"1":"Saint Mary's","2":"31.50","3":"27.57","4":"18.68","5":"14.254625","6":"68.629550","7":"47.591006"},{"1":"Carroll","2":"27.26","3":"28.25","4":"16.39","5":"-3.504425","6":"66.320927","7":"72.361196"},{"1":"Cecil","2":"25.27","3":"23.17","4":"16.66","5":"9.063444","6":"51.680672","7":"39.075630"},{"1":"Garrett","2":"26.16","3":"46.39","4":"17.56","5":"-43.608536","6":"48.974943","7":"164.179954"},{"1":"Caroline","2":"25.32","3":"34.62","4":"18.93","5":"-26.863085","6":"33.755943","7":"82.884311"},{"1":"Wicomico","2":"24.79","3":"29.94","4":"18.56","5":"-17.201069","6":"33.566810","7":"61.314655"},{"1":"Somerset","2":"25.46","3":"35.21","4":"19.47","5":"-27.690997","6":"30.765280","7":"80.842322"},{"1":"Frederick","2":"23.02","3":"28.41","4":"18.43","5":"-18.972193","6":"24.905046","7":"54.150841"},{"1":"Dorchester","2":"21.72","3":"32.93","4":"17.41","5":"-34.041907","6":"24.755887","7":"89.144170"},{"1":"Anne Arundel","2":"24.86","3":"27.70","4":"20.18","5":"-10.252708","6":"23.191278","7":"37.264618"},{"1":"Worcester","2":"23.08","3":"32.40","4":"19.28","5":"-28.765432","6":"19.709544","7":"68.049793"},{"1":"Charles","2":"28.02","3":"30.17","4":"23.82","5":"-7.126284","6":"17.632242","7":"26.658270"},{"1":"Harford","2":"28.93","3":"37.10","4":"25.38","5":"-22.021563","6":"13.987392","7":"46.178093"},{"1":"Queen Anne's","2":"33.87","3":"42.58","4":"30.76","5":"-20.455613","6":"10.110533","7":"38.426528"},{"1":"TOTAL","2":"23.66","3":"NA","4":"22.43","5":"NA","6":"5.483727","7":"NA"},{"1":"Kent","2":"25.65","3":"33.42","4":"25.97","5":"-23.249551","6":"-1.232191","7":"28.686946"},{"1":"Baltimore County","2":"22.16","3":"23.56","4":"23.09","5":"-5.942275","6":"-4.027718","7":"2.035513"},{"1":"Talbot","2":"32.80","3":"37.16","4":"34.49","5":"-11.733046","6":"-4.899971","7":"7.741374"},{"1":"Montgomery","2":"22.89","3":"19.11","4":"24.44","5":"19.780220","6":"-6.342062","7":"-21.808511"},{"1":"Howard","2":"25.46","3":"26.99","4":"28.49","5":"-5.668766","6":"-10.635311","7":"-5.265005"},{"1":"Prince George's","2":"24.61","3":"21.19","4":"27.56","5":"16.139689","6":"-10.703919","7":"-23.113208"},{"1":"Baltimore City","2":"13.40","3":"14.93","4":"17.27","5":"-10.247823","6":"-22.408801","7":"-13.549508"}],"options":{"columns":{"min":{},"max":[10],"total":[7]},"rows":{"min":[10],"max":[10],"total":[25]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuTkFcbmBgYCJ9 -->
-<pre class="r"><code>NA</code></pre>
-<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Question 1: What is the percentage change of early voters from an
