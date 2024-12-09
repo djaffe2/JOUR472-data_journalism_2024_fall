@@ -45,6 +45,11 @@ party_24 <- read_csv("data/early_voting_by_party.csv")
 census_api_key("e369fcda419fe9ae1d0c28b51a3573cfe44942e9", overwrite=TRUE, install= TRUE)
 
 ```
+
+```{r}
+county_2024<-county_2024|>
+  clean_names()
+```
 Most newsworthy thing about the data so far.
 Change in early voting from 2020 to 2024: -7.504786 %
 Change in early voting from 2016 to 2020: 44.98002 %
@@ -58,8 +63,9 @@ Also the three counties with the highest percentage of early voters, all fell in
 #5 Queen Anne's	Unemploymet 3.633084		early voter 33.87
 
 
+Question 4- How does early voting turnout correlate with registered party affiliation across Maryland counties? 
+
 ```{r pressure, echo= FALSE}
-#question 4- How does early voting turnout correlate with registered party affiliation across Maryland counties? 
 
 early_voting_2024 |>
   clean_names() |> 
@@ -133,9 +139,9 @@ q_3_final <-q_3_final |>
   q_3_final
  
 ```
+
 Question 1: What is the percentage change of early voters from an election prior to covid (or 2020) to after covid? 
 Answer: This is quite similar to question three. You can look at the percent change for each county, but here is the total percent change 
-
 ```{r}
 total_percent_changes <- q_3_final |>
   summarise(
@@ -209,7 +215,6 @@ q_5_final
 
 Question 2: What is the relationship between the proportion of eligible voters and early voter turnout in recent elections, and how do demographics explain differences across counties?
 Answer: Counties with more eligible voters tend to have higher early voting turnout. Demographics like income, unemployment, and party affiliation also explain differences between counties.
-
 ```{r}
 md_data_2 <- get_acs(
   geography = "county",
@@ -274,4 +279,12 @@ md_data_2 <- get_acs(
 
 md_data
 
+```
+
+```{r}
+q_2_final <- md_data_2 |> 
+  left_join(county_2024, by = "county_name") |>
+  select(county_name,no_school_pct, pro_school_degree_pct, masters_pct, highschool_pct, doctorate_pct, bachelor_pct, no_school_pct) 
+
+q_2_final
 ```
