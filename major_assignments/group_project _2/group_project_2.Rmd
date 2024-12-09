@@ -63,7 +63,8 @@ Also the three counties with the highest percentage of early voters, all fell in
 #5 Queen Anne's	Unemploymet 3.633084		early voter 33.87
 
 
-Question 4- How does early voting turnout correlate with registered party affiliation across Maryland counties? 
+Question 4- How does early voting turnout correlate with registered party affiliation across Maryland counties?
+Asnwer- Democratic counties have more Democratic early voters, while Republican counties have more Republican early voters, reflecting their political leanings. This shows that early voting turnout aligns with voter demographics. Overall, the data matches typical voting patterns.
 
 ```{r pressure, echo= FALSE}
 
@@ -87,10 +88,10 @@ early_voting_2024 |>
   #made new columns to show what percent of the early voters in each county were Dem and which percent were Rep. Does not seem like a very significant trend to me here. The counties that tend to lean red seem to have a higher percentage of Rep early voters and vice-versa. 
   arrange(desc(percent_dem))
 ```
-
+Question 3: Are certain counties turning out in higher numbers for early voting compared to previous elections?
+Asnwer 3- Calvert County saw a big jump in early voting, increasing by 60% from 2020 to 2024, while Washington County wasn’t far behind with a 40% rise. Washington County stands out even more with a 100% increase in early voting since 2016, showing how much things have changed over the years. This growth could be driven by efforts to make early voting easier or simply more interest in getting involved.    
 ```{r}
 
-#Question 3: Are certain counties turning out in higher numbers for early voting compared to previous elections? 
 #For each year, I cleaned the data, made the percent total number a DBL and renamed the percent total to its respective year. I selected only the county and the total percent of eligible voters who voter early. For this question, the total number of voters on any given day was not needed. 
 # Check the column names
 colnames(county_2024)
@@ -141,7 +142,7 @@ q_3_final <-q_3_final |>
 ```
 
 Question 1: What is the percentage change of early voters from an election prior to covid (or 2020) to after covid? 
-Answer: This is quite similar to question three. You can look at the percent change for each county, but here is the total percent change 
+Answer: This is quite similar to question three. You can look at the percent change for each county, but here is the total percent change. Early voting saw a 27% increase from 2016 to 2024, showing that the shift toward early voting during the pandemic has had a lasting impact. While turnout dipped slightly by 7.5% from 2020 to 2024, it still remained much higher than in 2016. This trend highlights how early voting has become a more popular option for many voters across the country.
 ```{r}
 total_percent_changes <- q_3_final |>
   summarise(
@@ -152,9 +153,8 @@ total_percent_changes <- q_3_final |>
 
 total_percent_changes
 ```
-#Question 5 
-#How do economic factors like median income and unemployment rates impact early voter turnout across Maryland counties? 
-
+Question 5 - How do economic factors like median income and unemployment rates impact early voter turnout across Maryland counties? 
+Answer- it seems that the higher the unemployment rate, the lower the median income. Counties with lower unemployment and higher incomes see more people turning out for early voting, showing that economic stability can make it easier for people to participate. When life is a little less stressful financially, it might be simpler to make time to vote early. This pattern shows how a community’s economic situation can influence voter turnout.
 ```{r}
 
 md_data <- get_acs(
@@ -179,7 +179,7 @@ md_data <- get_acs(
     county_name = gsub("Baltimore city, Maryland", "Baltimore City", county_name)
   ) |>
   
-  group_by(GEOID, county_name, variable) %>%
+  group_by(GEOID, county_name, variable) |>
   summarise(
     estimate = first(estimate),  
     .groups = 'drop'  
@@ -214,7 +214,7 @@ q_5_final
 ```
 
 Question 2: What is the relationship between the proportion of eligible voters and early voter turnout in recent elections, and how do demographics explain differences across counties?
-Answer: Counties with more eligible voters tend to have higher early voting turnout. Demographics like income, unemployment, and party affiliation also explain differences between counties.
+Answer: Counties with more eligible voters tend to have higher early voting turnout. Demographics like income, unemployment, and party affiliation also explain differences between counties. Demographics like education don't explain the differences differences between counties as much as expected.   
 ```{r}
 md_data_2 <- get_acs(
   geography = "county",
