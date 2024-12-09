@@ -23,7 +23,7 @@ library(lubridate)
 library(tidycensus)
 library(dplyr)
 library(stringr)
-library(ggplot2)
+
 
 ```
 2016 data has 104,046 rows and 19 columns
