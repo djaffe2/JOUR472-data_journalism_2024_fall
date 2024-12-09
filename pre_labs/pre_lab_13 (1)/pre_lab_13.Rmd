@@ -26,6 +26,26 @@ But they are - mostly - very useful for people who write code and for those tryi
 We'll be using a service called Groq for the examples here. You should [sign up for a free account](https://www.groq.com) and [create an API key](https://console.groq.com/docs/quickstart). Make sure you copy that key. We'll also need to install an R package to handle the responses:
 
 ```{r}
+# Function to detach all loaded packages
+detach_all_packages <- function() {
+  basic_packages <- c("package:stats", "package:graphics", "package:grDevices",
+                      "package:utils", "package:datasets", "package:methods",
+                      "package:base")
+ 
+  # Get all loaded packages
+  loaded_packages <- search()[grepl("package:", search())]
+ 
+  # Detach all except the basic packages
+  for (pkg in setdiff(loaded_packages, basic_packages)) {
+    detach(pkg, character.only = TRUE, unload = TRUE)
+  }
+}
+
+# Run the function to detach all loaded packages
+detach_all_packages()
+```
+
+```{r}
 install.packages("devtools")
 library(devtools)
 devtools::install_github("heurekalabsco/axolotr")
