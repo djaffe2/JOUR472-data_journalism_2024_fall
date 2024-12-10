@@ -215,6 +215,10 @@ q_5_final
 
 Question 2: What is the relationship between the proportion of eligible voters and early voter turnout in recent elections, and how do demographics explain differences across counties?
 Answer: Counties with more eligible voters tend to have higher early voting turnout. Demographics like income, unemployment, and party affiliation also explain differences between counties. Demographics like education don't explain the differences differences between counties as much as expected.   
+
+2 Talbot	Unemployment: 3.173432	early voter: 32.80	
+3 Calvert	Unemployment 3.180552		early voter 33.65	
+5 Queen Anne's	Unemployment 3.633084	 early voter 33.87
 ```{r}
 md_data_2 <- get_acs(
   geography = "county",
